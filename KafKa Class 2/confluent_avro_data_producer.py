@@ -7,22 +7,25 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 from confluent_kafka.serialization import StringSerializer 
 import pandas as pd
+import os
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
 
 
 # Kafka configuration dictionary
 kafka_config = {
-    'bootstrap.servers': 'pkc-57jzz.southcentralus.azure.confluent.cloud:9092',
+    'bootstrap.servers': os.getenv('KAFKA_BOOTSTRAP_SERVERS'),
     'security.protocol': 'SASL_SSL',
     'sasl.mechanisms': 'PLAIN',
-    'sasl.username': 'V5DSCECFW2C7TAZF',  # Replace with your API key
-    'sasl.password': 'BrRa/GlSjcN8fIel9P6DuPacSTR75W60ghHx8gCkuPfRl8Unx38e7k4D1EX49JGn'  # Replace with your API secret
+    'sasl.username': os.getenv('KAFKA_SASL_USERNAME'),
+    'sasl.password': os.getenv('KAFKA_SASL_PASSWORD')
 }
 
 # Schema Registry client setup configuration
 schema_registry_client = SchemaRegistryClient(
     {
-        'url': 'pkc-57jzz.southcentralus.azure.confluent.cloud:9092',
-        'basic.auth.user.info': '{}:{}'.format("V5DSCECFW2C7TAZF","BrRa/GlSjcN8fIel9P6DuPacSTR75W60ghHx8gCkuPfRl8Unx38e7k4D1EX49JGn")  # Replace with your Schema Registry credentials
+        'url': os.getenv('SCHEMA_REGISTRY_URL'),
+        'basic.auth.user.info': os.getenv('SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO')
     }
 )
 

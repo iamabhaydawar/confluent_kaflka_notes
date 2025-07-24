@@ -6,24 +6,26 @@ from confluent_kafka import DeserializingConsumer
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroDeserializer
 from confluent_kafka.serialization import StringDeserializer
-
+import os
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
 
 
 # Define Kafka configuration
 kafka_config = {
-    'bootstrap.servers': 'pkc-57jzz.southcentralus.azure.confluent.cloud:9092',
+    'bootstrap.servers': os.getenv('KAFKA_BOOTSTRAP_SERVERS'),
     'sasl.mechanisms': 'PLAIN',
     'security.protocol': 'SASL_SSL',
-    'sasl.username': 'V5DSCECFW2C7TAZF',
-    'sasl.password': 'BrRa/GlSjcN8fIel9P6DuPacSTR75W60ghHx8gCkuPfRl8Unx38e7k4D1EX49JGn',
+    'sasl.username': os.getenv('KAFKA_SASL_USERNAME'),
+    'sasl.password': os.getenv('KAFKA_SASL_PASSWORD'),
     'group.id': 'group2',
     'auto.offset.reset': 'latest'
 }
 
 # Create a Schema Registry client
 schema_registry_client = SchemaRegistryClient({
-  'url': 'pkc-57jzz.southcentralus.azure.confluent.cloud:9092',
-  'basic.auth.user.info': '{}:{}'.format('V5DSCECFW2C7TAZF','BrRa/GlSjcN8fIel9P6DuPacSTR75W60ghHx8gCkuPfRl8Unx38e7k4D1EX49JGn')
+  'url': os.getenv('SCHEMA_REGISTRY_URL'),
+  'basic.auth.user.info': os.getenv('SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO')
 })
 
 # Fetch the latest Avro schema for the value

@@ -18,8 +18,8 @@ kafka_config = {
     'security.protocol': 'SASL_SSL',
     'sasl.username': os.getenv('KAFKA_SASL_USERNAME'),
     'sasl.password': os.getenv('KAFKA_SASL_PASSWORD'),
-    'group.id': 'group2',
-    'auto.offset.reset': 'latest'
+    'group.id': 'group1',
+    'auto.offset.reset': 'earliest'
 }
 
 # Create a Schema Registry client
@@ -28,7 +28,7 @@ schema_registry_client = SchemaRegistryClient({
   'basic.auth.user.info': os.getenv('SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO')
 })
 
-# Fetch the latest Avro schema for the value
+# Fetch the earliest Avro schema for the value
 subject_name = 'retail_data_dev-value'
 schema_str = schema_registry_client.get_latest_version(subject_name).schema.schema_str
 

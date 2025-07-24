@@ -14,15 +14,15 @@ kafka_config = {
     'bootstrap.servers': 'pkc-57jzz.southcentralus.azure.confluent.cloud:9092',
     'security.protocol': 'SASL_SSL',
     'sasl.mechanisms': 'PLAIN',
-    'sasl.username': 'YOUR_API_KEY',  # Replace with your API key
-    'sasl.password': 'YOUR_API_SECRET'  # Replace with your API secret
+    'sasl.username': 'V5DSCECFW2C7TAZF',  # Replace with your API key
+    'sasl.password': 'BrRa/GlSjcN8fIel9P6DuPacSTR75W60ghHx8gCkuPfRl8Unx38e7k4D1EX49JGn'  # Replace with your API secret
 }
 
 # Schema Registry client setup configuration
 schema_registry_client = SchemaRegistryClient(
     {
-        'url': 'https://psrc-kk5gg.ap-southeast-2.azure.confluent.cloud',
-        'basic.auth.user.info': '{}:{}.format("SPHLZ4VH324C66NP","NekeBJS8t2j9kGea2isP6Y74u8SBnaCiTLIXL5bWRUhjyzVLXkAVP849PNViIiah)'  # Replace with your Schema Registry credentials
+        'url': 'pkc-57jzz.southcentralus.azure.confluent.cloud:9092',
+        'basic.auth.user.info': '{}:{}'.format("V5DSCECFW2C7TAZF","BrRa/GlSjcN8fIel9P6DuPacSTR75W60ghHx8gCkuPfRl8Unx38e7k4D1EX49JGn")  # Replace with your Schema Registry credentials
     }
 )
 
@@ -30,7 +30,9 @@ schema_registry_client = SchemaRegistryClient(
 #Fetch the latest avro schema for the value
 subject_name='retail_data_dev-value'
 schema_str=schema_registry_client.get_latest_version(subject_name).schema.schema_str
-
+print("--------------------------------")
+print("Schema from Schema Registry:")
+print(schema_str)
 
 
 #Create Avro Serializer for the value
@@ -75,17 +77,17 @@ def delivery_report(err, msg):
 
 #load the data from the csv file
 df=pd.read_csv('retail_data.csv')
-
 df=df.fillna('null')
-
+print(df.head(5))
+print("--------------------------------")
 #Iterate  over dataframe rows and produce to kafka topic
 for index,row in df.iterrows():
     #Create a dictionary from the row values
     data_value=row.to_dict()
     print(data_value)
     #Produce the data to the kafka topic
-    producer.produce(topic='retail_data_dev', key=str(index), value=data_value, on_delivery=delivery_report)
-    producer.flush()
+    # producer.produce(topic='retail_data_dev', key=str(index), value=data_value, on_delivery=delivery_report)
+    # producer.flush()
     time.sleep(2)
     #break
-print("All data successfully published to kafka topic")
+# print("All data successfully published to kafka topic")

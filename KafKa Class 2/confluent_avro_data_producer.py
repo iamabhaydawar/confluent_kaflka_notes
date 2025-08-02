@@ -33,9 +33,9 @@ schema_registry_client = SchemaRegistryClient(
 #Fetch the latest avro schema for the value
 subject_name='retail_data_dev-value'
 schema_str=schema_registry_client.get_latest_version(subject_name).schema.schema_str
-print("--------------------------------")
-print("Schema from Schema Registry:")
-print(schema_str)
+# print("--------------------------------")
+# print("Schema from Schema Registry:")
+# print(schema_str)
 
 
 #Create Avro Serializer for the value
@@ -88,9 +88,9 @@ for index,row in df.iterrows():
     #Create a dictionary from the row values
     data_value=row.to_dict()
     print(data_value)
-    #Produce the data to the kafka topic
-    # producer.produce(topic='retail_data_dev', key=str(index), value=data_value, on_delivery=delivery_report)
-    # producer.flush()
+    # Produce the data to the kafka topic
+    producer.produce(topic='retail_data_dev', key=str(index), value=data_value, on_delivery=delivery_report)
+    producer.flush()
     time.sleep(2)
     #break
 # print("All data successfully published to kafka topic")

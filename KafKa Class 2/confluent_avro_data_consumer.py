@@ -19,7 +19,7 @@ kafka_config = {
     'sasl.username': os.getenv('KAFKA_SASL_USERNAME'),
     'sasl.password': os.getenv('KAFKA_SASL_PASSWORD'),
     'group.id': 'group1',
-    'auto.offset.reset': 'earliest'
+    'auto.offset.reset': 'latest'
 }
 
 # Create a Schema Registry client
